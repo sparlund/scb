@@ -75,43 +75,53 @@ class scb():
 		'''
 		We want to print the content code filter first, makes more sense to select
 		that first. So we want to find the index of the variable that has the code
-		ContentsCode, and what index it has in the recieved json data.
+		ContentsCode, and the delete it from the dict and move on to the rest 
+		of the variables.
 		'''
 		contentcode_index = int([counter for counter,entry in enumerate(data['variables']) if entry['code'] == 'ContentsCode'][0])
-		for j,variable in enumerate(data['variables']):
+		contentcode = data['variables'][contentcode_index]
+		available_filters = contentcode['values']
+		t = PrettyTable([contentcode['text'], 'Code'])
+		available_filters = contentcode['values']					
+		while True:
+			for row in range(0,len(contentcode['values'])):
+				t.add_row([contentcode['valueTexts'][row],contentcode['values'][row]])
+			print(t)
+			filter_chosen = input('Enter filters from above: ')
+			if filter_chosen != '':
+				if filter_chosen not in available_filters:
+					print('You entered code:'+str(filter_chosen)+', and it''s not available.')
+				else:
+					post_query['query'].append(
+						{'code': contentcode['code'], 'selection': {'filter': 'item', 'values': filter_chosen.split(',')}})
+					break
+			# User enterd nothing as the filter, just break from loop and move on
+			else:
+				break
+		del data['variables'][contentcode_index] 		
+
+		for variable in data['variables']:
 			while True:
-				# Print ContentCode variable filter first!
-				if j == 0:
-					contentcode = data['variables'][contentcode_index]
-					t = PrettyTable([contentcode['text'], 'Code'])
-					available_filters = contentcode['values']					
-					for row in range(0,len(contentcode['values'])):
-						t.add_row([contentcode['valueTexts'][row],contentcode['values'][row]])
-				else:		
-					t = PrettyTable([variable['text'], 'Code'])					
-					available_filters = variable['values']
-					for row in range(0,len(variable['values'])):
-						t.add_row([variable['valueTexts'][row],variable['values'][row]])
+				t = PrettyTable([variable['text'], 'Code'])					
+				available_filters = variable['values']
+				for row in range(0,len(variable['values'])):
+					t.add_row([variable['valueTexts'][row],variable['values'][row]])
 				print(t)
 				filter_chosen = input('Enter filters from above: ')
 				# Check if the enterd value is in the available values
 				# If it's not, print the table again and let the user enter again.
-				if filter_chosen not in available_filters and filter_chosen != '':
-					print('You entered code:'+str(filter_chosen)+', and it''s not available.')
-				else:
-					# User entered correct value(s), break while loop and go to next filter	
-					if filter_chosen != '':
-						# Make filter_chosen separata items i en lista, inte som saker på rad!!!
-						if j == 0:
-							code = data['variables'][contentcode_index]['code'] 
-							del data['variables'][contentcode_index]
-							print(data['variables'])
-						else:
-							code = variable['code'] 	
+				if filter_chosen != '':
+					if filter_chosen not in available_filters:
+						print('You entered code:'+str(filter_chosen)+', and it''s not available.')
+					else:
+						# User entered correct value(s), break while loop and go to next filter	
 						post_query['query'].append(
-							{'code': code, 'selection': {'filter': 'item', 'values': filter_chosen.split(',')}})
-						post_query['response'] = {'format': 'json'}
-					break	
+							{'code': variable['code'], 'selection': {'filter': 'item', 'values': filter_chosen.split(',')}})
+						break
+				else:
+					break
+		# What type of data we want to return!						
+		post_query['response'] = {'format': 'json'}
 
 		# Finally, make a post request to the database at the current level with the specified filters
 		print(post_query)
