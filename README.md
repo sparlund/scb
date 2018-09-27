@@ -12,4 +12,4 @@ Enter a specific table:
 s.enter('OFFEkoMott')
 Request data from the table you're at:
 `output = s.get()`
-Output will be a dict with entries "filters" and "values", respectively containing the filters the user specified and the values the database returned.
+Output will be a dict with entries "filters" and "values", respectively containing the filters the user specified and the values the database returned.a
