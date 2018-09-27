@@ -139,15 +139,4 @@ class scb():
 					output['values'].append(int(d))
 
 
-		return output				
-
-
-
-
-
-s = scb()
-s.enter('OE')
-s.enter('OE0108')
-s.enter('OffEkoMott')
-o=s.get()
-print(o['values'])
+		return output
