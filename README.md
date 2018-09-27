@@ -2,7 +2,7 @@
 An Python 3.* application to interact with the swedish statistical institute, Statistiska Centralbyrån (SCB).
 
 # Exambples
-'import scb'
+`import scb`
 >>> s = scb.scb()
 >>> s.print()
 +---------------------------------+------+
