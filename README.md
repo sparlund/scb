@@ -13,7 +13,7 @@ Print content at current level:
 Enter a specific table:
 `s.enter('OE')
 
-`s.enter('OE108')
+`s.enter('OE108')`
 
 `s.enter('OFFEkoMott')`
 
