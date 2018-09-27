@@ -62,9 +62,10 @@ class scb():
 
 	def get(self):
 		'''
-		Request data from current table and return.... hm 
+		Request data from current table and return dict with
+		chosen filters and fetched values.
 		'''
-		# Get info about table:
+		# Get info about table:	
 		r = requests.get(self.url + self.current_level)
 		data = json.loads(r.text)
 
@@ -83,23 +84,6 @@ class scb():
 		available_filters = contentcode['values']
 		t = PrettyTable([contentcode['text'], 'Code'])
 		available_filters = contentcode['values']					
-		while True:
-			for row in range(0,len(contentcode['values'])):
-				t.add_row([contentcode['valueTexts'][row],contentcode['values'][row]])
-			print(t)
-			filter_chosen = input('Enter filters from above: ')
-			if filter_chosen != '':
-				if filter_chosen not in available_filters:
-					print('You entered code:'+str(filter_chosen)+', and it''s not available.')
-				else:
-					post_query['query'].append(
-						{'code': contentcode['code'], 'selection': {'filter': 'item', 'values': filter_chosen.split(',')}})
-					break
-			# User enterd nothing as the filter, just break from loop and move on
-			else:
-				break
-		del data['variables'][contentcode_index] 		
-
 		for variable in data['variables']:
 			while True:
 				t = PrettyTable([variable['text'], 'Code'])					
@@ -107,17 +91,14 @@ class scb():
 				for row in range(0,len(variable['values'])):
 					t.add_row([variable['valueTexts'][row],variable['values'][row]])
 				print(t)
-				filter_chosen = input('Enter filters from above: ')
+				filter_chosen = input('Enter filters from above: (split entries with comma, or leave blank)\n')
 				# Check if the enterd value is in the available values
 				# If it's not, print the table again and let the user enter again.
 				if filter_chosen != '':
-					if filter_chosen not in available_filters:
-						print('You entered code:'+str(filter_chosen)+', and it''s not available.')
-					else:
-						# User entered correct value(s), break while loop and go to next filter	
-						post_query['query'].append(
-							{'code': variable['code'], 'selection': {'filter': 'item', 'values': filter_chosen.split(',')}})
-						break
+					# User entered correct value(s), break while loop and go to next filter	
+					post_query['query'].append(
+						{'code': variable['code'], 'selection': {'filter': 'item', 'values': filter_chosen.split(',')}})
+					break
 				else:
 					break
 		# What type of data we want to return!						
@@ -148,7 +129,6 @@ class scb():
 		for d in jd['data']:
 			# Clean values:
 			d = str(d['values']).replace('[','').replace(']','').replace('\'','')
-			print(d)
 			# Check if value are only letters:
 			if d.isalpha():
 				output['values'].append(d)
@@ -158,7 +138,10 @@ class scb():
 				else:
 					output['values'].append(int(d))
 
+
 		return output				
+
+
 
 
 
@@ -166,10 +149,5 @@ s = scb()
 s.enter('OE')
 s.enter('OE0108')
 s.enter('OffEkoMott')
-s.print()
 o=s.get()
-#s.enter('BE0101')
-#s.enter('BE0101A')
-#s.enter('BefolkningNy')
-#o=s.get()
-#print(o)
+print(o['values'])
