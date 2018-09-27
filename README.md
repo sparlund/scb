@@ -5,9 +5,8 @@ An Python 3.* application to interact with the swedish statistical institute, St
 `import scb`
 `s = scb.scb()`
 `s.print()`
----------------------------------+------+
               Table              | Code |
----------------------------------+------+
+ --------------------------------+------+
    Ämnesövergripande statistik   |  AA  |
           Arbetsmarknad          |  AM  |
             Befolkning           |  BE  |
@@ -29,7 +28,7 @@ An Python 3.* application to interact with the swedish statistical institute, St
            Socialtjänst          |  SO  |
  Transporter och kommunikationer |  TK  |
      Utbildning och forskning    |  UF  |
----------------------------------+------+
+
 Enter a specific table:
 `s.enter('OE')
 `s.enter('OE108')
