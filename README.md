@@ -3,8 +3,8 @@ An Python 3.* application to interact with the swedish statistical institute, St
 
 # Exambples
 `import scb`
->>> s = scb.scb()
->>> s.print()
+`s = scb.scb()`
+`s.print()`
 +---------------------------------+------+
 |              Table              | Code |
 +---------------------------------+------+
@@ -30,13 +30,10 @@ An Python 3.* application to interact with the swedish statistical institute, St
 | Transporter och kommunikationer |  TK  |
 |     Utbildning och forskning    |  UF  |
 +---------------------------------+------+
-# Enter a specific table:
->>> s.enter('OE')
->>> s.enter('OE108')
->>> s.enter('OFFEkoMott')
-# Request data from the table you're at:
->>> output = s.get() 
->>> output.keys()
-dict_keys(['filters', 'values'])
-# The dict output contains the filters the user specified and the values the database returned
-
+Enter a specific table:
+`s.enter('OE')
+`s.enter('OE108')
+s.enter('OFFEkoMott')
+Request data from the table you're at:
+`output = s.get()`
+Output will be a dict with entries "filters" and "values", respectively containing the filters the user specified and the values the database returned.
