@@ -6,7 +6,6 @@ An Python 3.* application to interact with the swedish statistical institute, St
 `s = scb.scb()`
 `s.print()`
               Table              | Code |
- --------------------------------+------+
    Ämnesövergripande statistik   |  AA  |
           Arbetsmarknad          |  AM  |
             Befolkning           |  BE  |
